@@ -7,7 +7,7 @@
 
   <title>Safsata Türünü Bul</title>
 
-  <!-- CHROME SEKME İKONU -->
+  <!-- Chrome sekme ikonu -->
   <link rel="icon" type="image/x-icon" href="./gantep.ico?v=2">
 
   <style>
@@ -32,27 +32,6 @@
       max-width: 1050px;
       margin: 0 auto;
       padding: 24px 18px 50px;
-    }
-
-    .site-header {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 22px;
-    }
-
-    .uni-logo {
-      width: 60px;
-      height: 60px;
-      object-fit: contain;
-    }
-
-    h1 {
-      color: var(--mor);
-      text-align: center;
-      font-size: clamp(24px, 3.5vw, 34px);
-      margin: 0;
     }
 
     .status {
@@ -95,15 +74,7 @@
       margin: 0;
     }
 
-    .instruction {
-      margin: 22px 0 12px;
-      text-align: center;
-      font-size: 16px;
-      font-weight: 700;
-      color: #5b4b5e;
-    }
-
-    /* BUTONLAR */
+    /* Görsel butonlar */
 
     .options {
       margin-top: 24px;
@@ -148,7 +119,7 @@
       object-fit: contain;
     }
 
-    /* YANLIŞ: KIRMIZI */
+    /* Yanlış seçim */
 
     .option.wrong {
       background: #ffdddd;
@@ -156,7 +127,7 @@
       box-shadow: 0 0 0 2px #f5b5b5;
     }
 
-    /* DOĞRU: YEŞİL */
+    /* Doğru seçim */
 
     .option.correct {
       background: #e7f8eb;
@@ -191,7 +162,7 @@
       cursor: not-allowed;
     }
 
-    /* SONUÇ EKRANI */
+    /* Sonuç ekranı */
 
     .finish {
       display: none;
@@ -219,7 +190,7 @@
       font-size: 24px !important;
     }
 
-    /* TABLET: 3 + 3 */
+    /* Tablet: 3 + 3 */
 
     @media (max-width: 850px) {
       .options {
@@ -231,20 +202,11 @@
       }
     }
 
-    /* TELEFON: 3 + 3 */
+    /* Telefon: 3 + 3 */
 
     @media (max-width: 550px) {
       main {
         padding: 16px 12px 36px;
-      }
-
-      .site-header {
-        gap: 10px;
-      }
-
-      .uni-logo {
-        width: 45px;
-        height: 45px;
       }
 
       .case {
@@ -272,10 +234,6 @@
         height: 115px;
         object-fit: contain;
       }
-
-      .instruction {
-        font-size: 14px;
-      }
     }
   </style>
 </head>
@@ -284,12 +242,10 @@
 
 <main>
 
-  <!-- ÜST LOGO VE BAŞLIK -->
-
-  <!-- DURUM VE PUAN -->
+  <!-- Durum ve puan -->
 
   <section class="status">
-    <span id="counter">Durum 1 / 15</span>
+    <span id="counter">Durum 1 / 14</span>
     <span id="score">İlk denemede doğru: 0</span>
   </section>
 
@@ -297,7 +253,7 @@
     <div class="bar-fill" id="barFill"></div>
   </div>
 
-  <!-- OYUN ALANI -->
+  <!-- Oyun -->
 
   <section id="game">
 
@@ -315,11 +271,11 @@
 
   </section>
 
-  <!-- SONUÇ EKRANI -->
+  <!-- Sonuç -->
 
   <section id="finish" class="finish">
 
-    <h2>Bitti!</h2>
+    <h2>Çalışma Tamamlandı!</h2>
 
     <p id="result"></p>
 
@@ -333,12 +289,12 @@
 
 <script>
 
-  // 6 GÖRSEL
+  // ALTI GÖRSEL
 
   const types = [
     {
       key: "adam-karalama",
-      name: "Adam Karalama",
+      name: "Ad Hominem",
       image: "adam-karalama.png"
     },
     {
@@ -368,83 +324,78 @@
     }
   ];
 
-  // 15 DURUM
+  // 14 YENİ DURUM
 
   const situations = [
 
     {
-      text: "Bir üniversitenin faaliyet raporunda, kütüphaneden ödünç alınan kitap sayısının önceki yıla göre %28 arttığı belirtiliyor. Yönetim, bu artışı kütüphanenin giderek daha fazla öğrenciye ulaştığının göstergesi olarak sunuyor. Oysa aynı raporun ek tablolarında kütüphaneden yararlanan öğrenci sayısının %15 azaldığı ve ödünç alma işlemlerinin daha küçük bir öğrenci grubunda yoğunlaştığı görülüyor. Üniversitenin tanıtım metninde ise yalnızca ödünç alma sayısındaki artış vurgulanıyor.",
+      text: "Bir üniversitenin faaliyet raporunda, kütüphaneden ödünç alınan kitap sayısının önceki yıla göre %28 arttığı belirtiliyor. Yönetim, bu artışı kütüphanenin giderek daha fazla öğrenciye ulaştığının bir göstergesi olarak nitelendiriyor. Raporun ek tabloları incelendiğinde kütüphaneden yararlanan öğrenci sayısında %10’a yakın bir azalma olduğu ve ödünç alma işlemlerinin daha küçük bir öğrenci grubunda yoğunlaştığı görülüyor.",
       answer: "cimbizlama"
     },
 
     {
-      text: "Bir şehir plancısının hazırladığı meydan düzenleme projesi kamuoyunda tartışılıyor. Bir köşe yazarı, plancının geçmişte hakkında usulsüzlük iddiaları bulunan bir şirketin eski yöneticisiyle aynı dernekte görev yaptığını hatırlatıyor. Yazar, bu bağlantının projenin hangi amaçlara hizmet ettiğini anlamak için yeterli olduğunu ve rapordaki teknik gerekçeleri incelemenin gereksiz olduğunu savunuyor.",
+      text: "Bir mimarlık firmasının hazırladığı meydan düzenleme projesi kamuoyunda tartışılıyor. Yerel gazeteden bir köşe yazarı, köşesinde, firmanın yöneticisinin geçmişte hakkında usulsüzlük iddiaları bulunan bir şirketin eski yöneticisiyle aynı dernekte görev yaptığını hatırlatıyor. Yazar, bu bağlantının projenin hangi amaçlara hizmet ettiğini anlamak için yeterli olduğunu ve rapordaki teknik gerekçeleri incelemenin bütünüyle gereksiz olduğunu savunuyor.",
       answer: "adam-karalama"
     },
 
     {
-      text: "Bir grup akademisyen, üniversitelerde zorunlu devam uygulamasının sağlık sorunları, çalışma zorunluluğu ve bireysel öğrenme farklılıkları dikkate alınarak yeniden düzenlenmesini öneriyor. Fakülte kurulunun bir üyesi bu öneriye karşı çıkarak öğrencilerin yalnızca sınavlara girip diploma almasını esas alan bir üniversite anlayışının akademik disiplini ortadan kaldıracağını savunuyor.",
+      text: "Bir grup akademisyen, üniversitelerde zorunlu devam uygulamasının sağlık sorunları, çalışma zorunluluğu ve bireysel öğrenme farklılıkları dikkate alınarak yeniden düzenlenmesini öneriyor. Bu düzenleme üniversite senatosunda görüşülürken bir üye bu öneriye karşı çıkarak öğrencilerin yalnızca sınavlara girip diploma almasını esas alan bir üniversite anlayışının akademik disiplini ortadan kaldıracağını savunuyor.",
       answer: "korkuluk"
     },
 
     {
-      text: "Bir gazeteci, şehir merkezindeki aynı cadde üzerinde bulunan üç kitapçıda fiyatların birbirine yakın ve oldukça yüksek olduğunu gözlemliyor. Yazısında, şehirdeki kitapçıların artık öğrencilerin bütçesine uygun seçenekler sunmadığını ileri sürüyor. Üstelik bu durumun şehir genelindeki okuma alışkanlığının azalmasında önemli bir rol oynadığını savunuyor.",
-      answer: "aceleci-genelleme"
-    },
-
-    {
-      text: "Bir belediyenin kültür dairesi, kütüphanelere ayrılan bütçenin daraldığını belirterek yeni bir düzenleme öneriyor. Yetkililer, mevcut kaynaklarla hem hafta sonu hizmetini sürdürmenin hem de yeni kitap almanın mümkün olmadığını savunuyor. Bu nedenle koleksiyonun güncel kalmasını isteyenlerin hafta sonu hizmetinden vazgeçmesi gerektiğini söylüyor. Ancak raporda bütçe kalemlerinin yeniden düzenlenmesi veya hizmet saatlerinin değiştirilmesi gibi seçenekler değerlendirilmiyor.",
+      text: "Bir öğretim üyesi, derslerde telefon kullanımının sınırlandırılması gerektiğini, ancak bazı eğitim etkinliklerinde telefonlardan yararlanılabileceğini savunuyor. Bölüm yönetiminden bir başka akademisyen ise telefon kullanımına getirilen kısmi sınırlamaların dikkat sorununu çözmeyeceğini belirtiyor. Ona göre üniversitenin, telefonları dersliklerden tamamen uzaklaştırarak akademik disiplini koruması gerekiyor. Aksi takdirde öğrencilerin dikkatinin dağılmasının kaçınılmaz olduğunu savunuyor.",
       answer: "yanlis-ikilem"
     },
 
     {
-      text: "Şehir merkezindeki bazı caddelerin belirli saatlerde araç trafiğine kapatılması öneriliyor. Ulaşım uzmanları, uygulamanın yaya güvenliğini artırabileceğini ve bölgedeki hava kirliliğini azaltabileceğini belirtiyor. Buna karşı çıkan bir köşe yazarı ise özel araç kullanımını bütünüyle ortadan kaldırmaya çalışan bu yaklaşımın insanların ulaşım özgürlüğünü tehdit ettiğini savunuyor.",
-      answer: "korkuluk"
+      text: "Bir ekonomi yorumcusu, son aylarda iki büyük restoran zincirinin müşteri şikâyetlerinde belirgin bir artış yaşandığına dikkat çekiyor. Bu işletmelerdeki hizmet sorunlarını değerlendirdikten sonra ülkedeki restoran sektörünün genel olarak müşteri memnuniyetini önemsememeye başladığını savunuyor. Ayrıca bu durumun sektörde çalışanların mesleki sorumluluk anlayışındaki gerilemeyi gösterdiğini ileri sürüyor.",
+      answer: "aceleci-genelleme"
     },
 
     {
-      text: "Bir belediye, yeni ulaşım hattının başarısını değerlendirmek amacıyla yolcu memnuniyeti araştırması yapıyor. Sabah saatlerinde hattı kullanan yolcuların büyük çoğunluğu hizmetten memnun olduğunu belirtiyor. Ancak akşam saatlerinde sefer yetersizliği ve uzun bekleme süreleri nedeniyle ciddi şikâyetler ortaya çıkıyor. Belediye, kamuoyuna yaptığı açıklamada sabah saatlerindeki memnuniyet oranlarını öne çıkararak hattın beklentileri karşıladığını duyuruyor.",
+      text: "Bir akademisyen, dersinde, öğrencilerin araştırmalarında kullandıkları kaynakların doğruluğunu mutlaka kontrol etmeleri gerektiğinin altını çiziyor. Öğrencilerden biri, akademisyenin birkaç yıl önce yayımladığı bir makalede gerçekte olmayan bir kaynağı kaynak olarak gösterdiğini ifade ederek akademisyenin kendi çalışmalarında bile bu kurala uymadığını ve birçok işi ChatGPT’ye devrettiğini ileri sürüyor ve önerilerinin ciddiye alınamayacağını söylüyor.",
+      answer: "adam-karalama"
+    },
+
+    {
+      text: "Belediyenin düzenlediği ulaşım ve trafik toplantısında şehir plancısı, şehir merkezindeki bir caddenin hafta sonları belirli saatlerde araç trafiğine kapatılmasını öneriyor. Esnaf temsilcisi, önerinin yayalar açısından bazı yararlar sağlayabileceğini kabul ediyor. Ancak aynı saatlerde bölgedeki işletmelere mal teslimatı yapıldığını ve araç girişinin sınırlandırılmasının bu işletmelerin faaliyetlerini zorlaştırabileceğini belirtiyor. Bu nedenle önerilen saatlerin yeniden değerlendirilmesini ve teslimat araçları için belirli düzenlemeler yapılmasını istiyor.",
+      answer: "safsata-yok"
+    },
+
+    {
+      text: "Bir belediye, yeni ulaşım hattının başarısını değerlendirmek amacıyla yolcu memnuniyeti araştırması yapıyor. Sabah saatlerinde hattı kullanan yolcuların büyük çoğunluğu hizmetten memnun olduğunu belirtiyor. Ancak akşam saatlerinde sefer yetersizliği ve uzun bekleme süreleri nedeniyle ciddi şikâyetler ortaya çıkıyor. Belediyenin yayımladığı kısa filmde, vatandaşlarla yapılan röportajların genellikle sabah saatlerindeki seferlere ilişkin olduğu görülüyor.",
       answer: "cimbizlama"
     },
 
     {
-      text: "Bir akademisyen, öğrencilerin araştırmalarında kullandıkları kaynakların doğruluğunu mutlaka kontrol etmeleri gerektiğini savunuyor. Öğrencilerden biri, akademisyenin birkaç yıl önce yayımladığı bir makalede hatalı bir kaynak gösterimi bulunduğunu hatırlatıyor. Akademisyenin kendi çalışmalarında bile bu kurala uymadığını belirterek kaynak kontrolü konusundaki önerisinin ciddiye alınamayacağını söylüyor.",
+      text: "Mahallede yeni bir park yapılması gerektiğini savunan esnaf, bölgede çocukların güvenle oynayabileceği alanların yetersizliğine dikkat çekiyor. Ancak esnafın dükkânının parkın yapılması planlanan alana yakın olduğunu öğrenen bir mahalle sakini, bu önerinin yalnızca ticari kazanç beklentisinden kaynaklandığını savunarak bu fikre karşı çıkıyor.",
       answer: "adam-karalama"
     },
 
     {
-      text: "Bir üniversite, öğrencilerin ideal çalışma ortamını belirlemek amacıyla anket gerçekleştiriyor. Anket, kütüphanenin sessiz çalışma salonunda bulunan 200 öğrenciye uygulanıyor. Katılımcıların büyük çoğunluğu sessiz ortamlarda daha verimli çalıştıklarını belirtiyor. Üniversite yönetimi bu sonuçtan hareketle öğrencilerin ortak çalışma ve tartışma alanlarına ihtiyaç duymadığını açıklıyor.",
-      answer: "aceleci-genelleme"
-    },
-
-    {
-      text: "Bir öğretim üyesi, derslerde telefon kullanımının sınırlandırılması gerektiğini, ancak bazı eğitim etkinliklerinde telefonlardan yararlanılabileceğini savunuyor. Bölüm yönetiminden bir başka akademisyen ise telefon kullanımına getirilen kısmi sınırlamaların dikkat sorununu çözmeyeceğini belirtiyor. Ona göre üniversite, ya telefonları dersliklerden tamamen uzaklaştırarak akademik disiplini koruyor ya da öğrencilerin dikkatinin dağılmasını kabul ediyor.",
+      text: "Bir rehabilitasyon merkezinde taburculuk sonrası hasta takibinin nasıl yürütüleceği tartışılıyor. Birim sorumlusu, mevcut personelle bütün hastalara haftalık yüz yüze seans sağlamanın mümkün olmadığını belirtiyor. Kişiye özgü rehabilitasyondan söz edebilmek için her hastanın düzenli olarak bire bir izlenmesi gerektiğini, bunun sağlanamadığı koşullarda ise bütün hastalara aynı ev egzersiz programının verilmesinin daha tutarlı olacağını savunuyor.",
       answer: "yanlis-ikilem"
     },
 
     {
-      text: "Bir edebiyat araştırmacısı, lise müfredatında kadın yazarlara daha fazla yer verilmesinin edebiyat tarihine ilişkin bakış açısını zenginleştireceğini savunuyor. Buna karşı çıkan bir eleştirmen, edebiyatın değerini yazarların cinsiyetine göre belirlemeye çalışan bu yaklaşımın erkek yazarların eserlerini geri plana iterek edebî niteliği ikinci plana attığını ileri sürüyor.",
+      text: "Bir hastanenin fizyoterapi biriminde, nörolojik rehabilitasyon uygulamalarının yeniden düzenlenmesi tartışılıyor. Bir grup fizyoterapist, belirli hastalarda egzersiz yoğunluğunun yalnızca standart protokollere göre değil, hastanın yorgunluğu, klinik durumu ve günlük performansı dikkate alınarak ayarlanmasını öneriyor. Başka bir uzman ise rehabilitasyonun nesnel ölçütlere dayanması gerektiğini vurgulayarak hastaların o günkü isteklerine göre şekillenen bir tedavi anlayışının bilimsel standartları zayıflatacağını ileri sürüyor.",
       answer: "korkuluk"
     },
 
     {
-      text: "Mahallede yeni bir park yapılması gerektiğini savunan esnaf, bölgede çocukların güvenle oynayabileceği alanların yetersizliğine dikkat çekiyor. Ancak esnafın dükkânının parkın yapılması planlanan alana yakın olduğunu öğrenen bir mahalle sakini, bu önerinin yalnızca ticari kazanç beklentisinden kaynaklandığını söylüyor. Bu nedenle esnafın çocukların ihtiyaçlarıyla ilgili gerekçelerini değerlendirmeye gerek olmadığını savunuyor.",
-      answer: "adam-karalama"
+      text: "Bir fizyoterapi merkezinde, hastaların evde yapmaları gereken hareketleri daha iyi hatırlamaları için resimli bir egzersiz kitapçığı hazırlanıyor. Kitapçığı kullanan 24 hastanın 18'i hareketleri daha kolay hatırladığını, altısı ise bazı hareketleri uygularken zorlandığını belirtiyor. Sorumlu fizyoterapist, sonuçların kitapçığın hasta eğitimine katkı sağlayabilecek önemli bir çalışma olduğunu ileri sürüyor. Bununla birlikte kitapçığın daha geniş bir hasta grubunda denenmesini ve anlaşılmayan bölümlerin yeniden düzenlenmesini istiyor.",
+      answer: "safsata-yok"
     },
 
     {
-      text: "Bir kurs merkezi, yıl sonunda en yüksek puanı alan on öğrencisinin sonuçlarını yayımlayarak uyguladığı eğitim yönteminin son derece başarılı olduğunu duyuruyor. Merkezin reklamlarında bu öğrencilerin başarı hikâyelerine geniş yer veriliyor. Ancak aynı yıl kursa katılan öğrencilerin genel başarı ortalamasının önceki yıla göre düştüğü görülüyor. Kurum, bu bilgiyi tanıtım çalışmalarında paylaşmıyor.",
+      text: "Bir rehabilitasyon merkezi, kronik diz ağrısı yaşayan hastalar için geliştirdiği egzersiz programının sonuçlarını bir kongrede sunuyor. Sunumda, programa katılan hastaların altıncı haftadaki ağrı puanlarının başlangıca göre belirgin biçimde azaldığı vurgulanıyor. Araştırmanın ayrıntılı sonuçlarında ise on ikinci haftada karşılaştırma grubuyla anlamlı bir fark bulunmadığı ve günlük yaşam aktivitelerine ilişkin ölçümlerde iki grup arasında belirgin bir üstünlük görülmediği belirtiliyor. Merkez, sunumun sonuç bölümünde programın rehabilitasyon başarısını artırdığını savunuyor.",
       answer: "cimbizlama"
     },
 
     {
-      text: "Bir üniversitede devam zorunluluğunun yeniden düzenlenmesi tartışılıyor. Öğrenci temsilcileri, devam koşullarında belirli ölçüde esneklik sağlanmasını öneriyor. Üniversite yönetiminden bir üye ise iki yaklaşım arasında karar verilmesi gerektiğini savunuyor: Üniversite ya öğrencilerin derslere katılımını zorunlu tutarak eğitimin ciddiyetini koruyor ya da devam kararını tamamen öğrencilere bırakarak akademik disiplinden vazgeçiyor.",
-      answer: "yanlis-ikilem"
-    },
-
-    {
-      text: "Bir ekonomi yorumcusu, son aylarda iki büyük restoran zincirinin müşteri şikâyetlerinde artış yaşandığını belirtiyor. Bu işletmelerdeki hizmet sorunlarını değerlendirdikten sonra ülkedeki restoran sektörünün genel olarak müşteri memnuniyetini önemsememeye başladığını savunuyor. Ayrıca bu durumun sektörde çalışanların mesleki sorumluluk anlayışındaki gerilemeyi gösterdiğini ileri sürüyor.",
-      answer: "aceleci-genelleme"
+      text: "Bir üniversitenin fizyoterapi bölümünde kronik bel ağrısına yönelik takip programları tartışılıyor. Bir öğretim üyesi, hastaların belirli aralıklarla yeniden değerlendirilmesini ve egzersiz programlarının bu değerlendirmelere göre güncellenmesini öneriyor. Toplantıya katılan başka bir akademisyen, öneriyi sunan kişinin aynı zamanda özel bir rehabilitasyon merkezinde ücretli takip hizmetleri verdiğini öne sürüyor. Bu durumun önerinin arkasındaki asıl amacı ortaya koyduğunu belirterek sunulan bilimsel gerekçelerden önce öneriyi geliştiren kişinin konumunun dikkate alınması gerektiğine dikkat çekiyor.",
+      answer: "adam-karalama"
     }
 
   ];
@@ -519,8 +470,7 @@
 
     const correctAnswer = situations[index].answer;
 
-    // YANLIŞ CEVAP:
-    // KIRMIZI YANAR VE 750 MS SONRA SÖNER.
+    // Yanlış: Kırmızı yanıp söner
 
     if (key !== correctAnswer) {
 
@@ -539,8 +489,7 @@
       return;
     }
 
-    // DOĞRU CEVAP:
-    // YEŞİL YANAR VE KALIR.
+    // Doğru: Yeşil kalır
 
     solved = true;
 
@@ -554,13 +503,9 @@
     score.textContent =
       `İlk denemede doğru: ${firstTryCorrect}`;
 
-    // SEÇENEKLERİ KİLİTLE
-
     [...options.children].forEach(option => {
       option.disabled = true;
     });
-
-    // SONRAKİ DURUMU AÇ
 
     next.disabled = false;
   }
@@ -604,8 +549,6 @@
 
     const result = document.getElementById("result");
 
-    // 15 DURUMUN TÜMÜ İLK DENEMEDE DOĞRUYSA
-
     if (firstTryCorrect === situations.length) {
 
       result.textContent =
@@ -639,7 +582,6 @@
       solved = false;
 
       document.getElementById("game").style.display = "block";
-
       document.getElementById("finish").style.display = "none";
 
       showSituation();
@@ -650,8 +592,6 @@
       });
 
     });
-
-  // OYUNU BAŞLAT
 
   showSituation();
 
