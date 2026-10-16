@@ -106,6 +106,7 @@
     /* BUTONLAR */
 
     .options {
+      margin-top: 24px;
       display: grid;
       grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 10px;
@@ -308,7 +309,7 @@
 
     <div class="actions">
       <button id="next" class="next" disabled>
-        Sonraki →
+        Sonraki
       </button>
     </div>
 
@@ -473,7 +474,7 @@
     next.textContent =
       index === situations.length - 1
         ? "Sonucu Gör →"
-        : "Sonraki Durum →";
+        : "Sonraki";
 
     counter.textContent =
       `Durum ${index + 1} / ${situations.length}`;
