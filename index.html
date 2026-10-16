@@ -4,9 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Safsata Türünü Bul</title>
 
-  <link rel="icon" type="image/png" href="gantep.ico">
+  <!-- CHROME SEKME İKONU -->
+  <link rel="icon" type="image/x-icon" href="./gantep.ico?v=2">
 
   <style>
     :root {
@@ -145,7 +147,7 @@
       object-fit: contain;
     }
 
-    /* YANLIŞ CEVAP */
+    /* YANLIŞ: KIRMIZI */
 
     .option.wrong {
       background: #ffdddd;
@@ -153,7 +155,7 @@
       box-shadow: 0 0 0 2px #f5b5b5;
     }
 
-    /* DOĞRU CEVAP */
+    /* DOĞRU: YEŞİL */
 
     .option.correct {
       background: #e7f8eb;
@@ -188,6 +190,8 @@
       cursor: not-allowed;
     }
 
+    /* SONUÇ EKRANI */
+
     .finish {
       display: none;
       background: white;
@@ -214,7 +218,7 @@
       font-size: 24px !important;
     }
 
-    /* TABLET: 3 BUTON + 3 BUTON */
+    /* TABLET: 3 + 3 */
 
     @media (max-width: 850px) {
       .options {
@@ -226,7 +230,7 @@
       }
     }
 
-    /* TELEFON: 3 BUTON + 3 BUTON */
+    /* TELEFON: 3 + 3 */
 
     @media (max-width: 550px) {
       main {
@@ -279,14 +283,21 @@
 
 <main>
 
+  <!-- ÜST LOGO VE BAŞLIK -->
+
   <header class="site-header">
+
     <img
-      src="gaziantep-uni-icon.png"
+      src="./gantep.ico"
       alt="Gaziantep Üniversitesi"
       class="uni-logo"
     >
+
     <h1>Safsata Türünü Bul</h1>
+
   </header>
+
+  <!-- DURUM VE PUAN -->
 
   <section class="status">
     <span id="counter">Durum 1 / 15</span>
@@ -296,6 +307,8 @@
   <div class="bar">
     <div class="bar-fill" id="barFill"></div>
   </div>
+
+  <!-- OYUN ALANI -->
 
   <section id="game">
 
@@ -317,6 +330,8 @@
 
   </section>
 
+  <!-- SONUÇ EKRANI -->
+
   <section id="finish" class="finish">
 
     <h2>Çalışma Tamamlandı!</h2>
@@ -332,6 +347,8 @@
 </main>
 
 <script>
+
+  // 6 GÖRSEL
 
   const types = [
     {
@@ -365,6 +382,8 @@
       image: "safsata-yok.png"
     }
   ];
+
+  // 15 DURUM
 
   const situations = [
 
@@ -445,6 +464,8 @@
 
   ];
 
+  // OYUN DEĞİŞKENLERİ
+
   let index = 0;
   let firstTryCorrect = 0;
   let attemptedWrong = false;
@@ -456,6 +477,8 @@
   const caseText = document.getElementById("caseText");
   const options = document.getElementById("options");
   const next = document.getElementById("next");
+
+  // DURUMU GÖSTER
 
   function showSituation() {
 
@@ -503,13 +526,16 @@
     });
   }
 
+  // CEVAP KONTROLÜ
+
   function choose(key, button) {
 
     if (solved) return;
 
     const correctAnswer = situations[index].answer;
 
-    // YANLIŞ: KIRMIZI YANIP SÖNER
+    // YANLIŞ CEVAP:
+    // KIRMIZI YANAR VE 750 MS SONRA SÖNER.
 
     if (key !== correctAnswer) {
 
@@ -528,7 +554,8 @@
       return;
     }
 
-    // DOĞRU: YEŞİL KALIR
+    // DOĞRU CEVAP:
+    // YEŞİL YANAR VE KALIR.
 
     solved = true;
 
@@ -542,12 +569,18 @@
     score.textContent =
       `İlk denemede doğru: ${firstTryCorrect}`;
 
+    // SEÇENEKLERİ KİLİTLE
+
     [...options.children].forEach(option => {
       option.disabled = true;
     });
 
+    // SONRAKİ DURUMU AÇ
+
     next.disabled = false;
   }
+
+  // SONRAKİ DURUM
 
   next.addEventListener("click", () => {
 
@@ -571,6 +604,8 @@
     }
   });
 
+  // SONUÇ EKRANI
+
   function showResult() {
 
     document.getElementById("game").style.display = "none";
@@ -583,6 +618,8 @@
     barFill.style.width = "100%";
 
     const result = document.getElementById("result");
+
+    // 15 DURUMUN TÜMÜ İLK DENEMEDE DOĞRUYSA
 
     if (firstTryCorrect === situations.length) {
 
@@ -606,6 +643,8 @@
     });
   }
 
+  // YENİDEN BAŞLA
+
   document.getElementById("restart")
     .addEventListener("click", () => {
 
@@ -626,6 +665,8 @@
       });
 
     });
+
+  // OYUNU BAŞLAT
 
   showSituation();
 
