@@ -4,10 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Safsata Türünü Bul</title>
 
-  <!-- GAZİANTEP ÜNİVERSİTESİ SEKME İKONU -->
   <link rel="icon" type="image/png" href="gaziantep-uni-icon.png">
 
   <style>
@@ -29,7 +27,7 @@
     }
 
     main {
-      max-width: 1180px;
+      max-width: 1050px;
       margin: 0 auto;
       padding: 24px 18px 50px;
     }
@@ -103,12 +101,12 @@
       color: #5b4b5e;
     }
 
-    /* ALTI GÖRSELİN DÜZENİ */
+    /* BUTONLAR */
 
     .options {
       display: grid;
       grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 14px;
+      gap: 10px;
       align-items: stretch;
     }
 
@@ -116,9 +114,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 8px;
+      padding: 5px;
       border: 3px solid #ded5e1;
-      border-radius: 14px;
+      border-radius: 12px;
       background: white;
       cursor: pointer;
       min-width: 0;
@@ -143,11 +141,11 @@
     .option img {
       display: block;
       width: 100%;
-      aspect-ratio: 1 / 1.13;
+      height: 145px;
       object-fit: contain;
     }
 
-    /* YANLIŞ CEVAP: GEÇİCİ KIRMIZI */
+    /* YANLIŞ CEVAP */
 
     .option.wrong {
       background: #ffdddd;
@@ -155,7 +153,7 @@
       box-shadow: 0 0 0 2px #f5b5b5;
     }
 
-    /* DOĞRU CEVAP: KALICI YEŞİL */
+    /* DOĞRU CEVAP */
 
     .option.correct {
       background: #e7f8eb;
@@ -190,8 +188,6 @@
       cursor: not-allowed;
     }
 
-    /* SONUÇ EKRANI */
-
     .finish {
       display: none;
       background: white;
@@ -218,15 +214,19 @@
       font-size: 24px !important;
     }
 
-    /* TABLET: 3 + 3 */
+    /* TABLET: 3 BUTON + 3 BUTON */
 
     @media (max-width: 850px) {
       .options {
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
+
+      .option img {
+        height: 145px;
+      }
     }
 
-    /* TELEFON: 2 + 2 + 2 */
+    /* TELEFON: 3 BUTON + 3 BUTON */
 
     @media (max-width: 550px) {
       main {
@@ -252,12 +252,24 @@
       }
 
       .options {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 7px;
       }
 
       .option {
-        padding: 7px;
+        padding: 3px;
+        border-width: 2px;
+        border-radius: 9px;
+      }
+
+      .option img {
+        width: 100%;
+        height: 115px;
+        object-fit: contain;
+      }
+
+      .instruction {
+        font-size: 14px;
       }
     }
   </style>
@@ -267,21 +279,14 @@
 
 <main>
 
-  <!-- ÜNİVERSİTE LOGOSU VE BAŞLIK -->
-
   <header class="site-header">
-
     <img
       src="gaziantep-uni-icon.png"
       alt="Gaziantep Üniversitesi"
       class="uni-logo"
     >
-
     <h1>Safsata Türünü Bul</h1>
-
   </header>
-
-  <!-- DURUM VE PUAN -->
 
   <section class="status">
     <span id="counter">Durum 1 / 15</span>
@@ -291,8 +296,6 @@
   <div class="bar">
     <div class="bar-fill" id="barFill"></div>
   </div>
-
-  <!-- OYUN -->
 
   <section id="game">
 
@@ -314,8 +317,6 @@
 
   </section>
 
-  <!-- SONUÇ EKRANI -->
-
   <section id="finish" class="finish">
 
     <h2>Çalışma Tamamlandı!</h2>
@@ -331,8 +332,6 @@
 </main>
 
 <script>
-
-  // ALTI GÖRSEL
 
   const types = [
     {
@@ -366,8 +365,6 @@
       image: "safsata-yok.png"
     }
   ];
-
-  // 15 DURUM VE DOĞRU CEVAPLARI
 
   const situations = [
 
@@ -448,8 +445,6 @@
 
   ];
 
-  // OYUN DEĞİŞKENLERİ
-
   let index = 0;
   let firstTryCorrect = 0;
   let attemptedWrong = false;
@@ -461,8 +456,6 @@
   const caseText = document.getElementById("caseText");
   const options = document.getElementById("options");
   const next = document.getElementById("next");
-
-  // DURUMU GÖSTER
 
   function showSituation() {
 
@@ -510,16 +503,13 @@
     });
   }
 
-  // CEVAP KONTROLÜ
-
   function choose(key, button) {
 
     if (solved) return;
 
     const correctAnswer = situations[index].answer;
 
-    // YANLIŞ SEÇİM:
-    // 0,75 SANİYE KIRMIZI YANIP SÖNER.
+    // YANLIŞ: KIRMIZI YANIP SÖNER
 
     if (key !== correctAnswer) {
 
@@ -538,8 +528,7 @@
       return;
     }
 
-    // DOĞRU SEÇİM:
-    // YEŞİL YANAR VE KALIR.
+    // DOĞRU: YEŞİL KALIR
 
     solved = true;
 
@@ -553,18 +542,12 @@
     score.textContent =
       `İlk denemede doğru: ${firstTryCorrect}`;
 
-    // SEÇENEKLERİ KİLİTLE
-
     [...options.children].forEach(option => {
       option.disabled = true;
     });
 
-    // SONRAKİ DURUMA GEÇİŞİ AÇ
-
     next.disabled = false;
   }
-
-  // SONRAKİ DURUM
 
   next.addEventListener("click", () => {
 
@@ -588,8 +571,6 @@
     }
   });
 
-  // SONUÇ EKRANI
-
   function showResult() {
 
     document.getElementById("game").style.display = "none";
@@ -602,9 +583,6 @@
     barFill.style.width = "100%";
 
     const result = document.getElementById("result");
-
-    // TÜMÜ İLK DENEMEDE DOĞRUYSA
-    // ÖZEL TEBRİK MESAJI
 
     if (firstTryCorrect === situations.length) {
 
@@ -628,8 +606,6 @@
     });
   }
 
-  // YENİDEN BAŞLA
-
   document.getElementById("restart")
     .addEventListener("click", () => {
 
@@ -650,8 +626,6 @@
       });
 
     });
-
-  // OYUNU BAŞLAT
 
   showSituation();
 
