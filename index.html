@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Safsata Eşleştirme Oyunu</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f4f4;
+      color: #222;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      color: #5a2d63;
+    }
+
+    .status-bar {
+      background: white;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .status-item {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .question-box {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+      min-height: 220px;
+    }
+
+    .question-title {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 14px;
+      color: #5a2d63;
+    }
+
+    .question-text {
+      font-size: 20px;
+      line-height: 1.7;
+      white-space: pre-line;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 16px;
+    }
+
+    .option-btn {
+      background: white;
+      border: 3px solid transparent;
+      border-radius: 16px;
+      cursor: pointer;
+      padding: 10px;
+      transition: 0.2s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .option-btn:hover {
+      transform: translateY(-4px);
+      border-color: #8d4c97;
+    }
+
+    .option-btn img {
+      width: 100%;
+      height: 220px;
+      object-fit: contain;
+      display: block;
+      border-radius: 10px;
+      background: #fff;
+    }
+
+    .feedback {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 20px;
+      font-weight: bold;
+      display: none;
+    }
+
+    .feedback.correct {
+      display: block;
+      background: #e7f9ed;
+      color: #1e7a37;
+      border: 2px solid #8dd8a3;
+    }
+
+    .feedback.wrong {
+      display: block;
+      background: #fdecec;
+      color: #a12626;
+      border: 2px solid #f0a2a2;
+    }
+
+    .next-btn, .restart-btn {
+      margin-top: 16px;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      background: #5a2d63;
+      color: white;
+      display: none;
+    }
+
+    .next-btn:hover, .restart-btn:hover {
+      background: #74387f;
+    }
+
+    .result-box {
+      background: white;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: center;
+      display: none;
+    }
+
+    .result-box h2 {
+      color: #5a2d63;
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .result-box p {
+      font-size: 22px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 600px) {
+      .question-text {
+        font-size: 18px;
+      }
+
+      .question-title {
+        font-size: 20px;
+      }
+
+      .status-item {
+        font-size: 16px;
+      }
+
+      .option-btn img {
+        height: 180px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Safsata Türünü Seç</h1>
+
+    <div class="status-bar">
+      <div class="status-item" id="progress">Soru: 1 / 15</div>
+      <div class="status-item" id="score">Puan: 0</div>
+      <div class="status-item" id="statusText">Durum: Devam ediyor</div>
+    </div>
+
+    <div class="question-box" id="quizBox">
+      <div class="question-title" id="questionTitle">Soru 1</div>
+      <div class="question-text" id="questionText"></div>
+    </div>
+
+    <div class="options" id="options"></div>
+
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn">Sonraki Soru</button>
+
+    <div class="result-box" id="resultBox">
+      <h2>Test Bitti</h2>
+      <p id="finalScore"></p>
+      <button class="restart-btn" id="restartBtn">Baştan Başlat</button>
+    </div>
+  </div>
+
+  <script>
+    const optionList = [
+      {
+        key: "adam-karalama",
+        label: "Adam Karalama",
+        image: "adam-karalama.png"
+      },
+      {
+        key: "aceleci-genelleme",
+        label: "Aceleci Genelleme",
+        image: "aceleci-genelleme.png"
+      },
+      {
+        key: "cimbizlama",
+        label: "Cımbızlama",
+        image: "cimbizlama.png"
+      },
+      {
+        key: "korkuluk",
+        label: "Korkuluk",
+        image: "korkuluk.png"
+      },
+      {
+        key: "yanlis-ikilem",
+        label: "Yanlış İkilem",
+        image: "yanlis-ikilem.png"
+      }
+    ];
+
+    const questions = [
+      {
+        text: "Bir üniversitenin faaliyet raporunda, kütüphaneden ödünç alınan kitap sayısının önceki yıla göre %28 arttığı belirtiliyor. Yönetim, bu artışı kütüphanenin giderek daha fazla öğrenciye ulaştığının göstergesi olarak sunuyor. Oysa aynı raporun ek tablolarında kütüphaneden yararlanan öğrenci sayısının %15 azaldığı ve ödünç alma işlemlerinin daha küçük bir öğrenci grubunda yoğunlaştığı görülüyor. Üniversitenin tanıtım metninde ise yalnızca ödünç alma sayısındaki artış vurgulanıyor.",
+        answer: "cimbizlama"
+      },
+      {
+        text: "Bir şehir plancısının hazırladığı meydan düzenleme projesi kamuoyunda tartışılıyor. Bir köşe yazarı, plancının geçmişte hakkında usulsüzlük iddiaları bulunan bir şirketin eski yöneticisiyle aynı dernekte görev yaptığını hatırlatıyor. Yazar, bu bağlantının projenin hangi amaçlara hizmet ettiğini anlamak için yeterli olduğunu ve rapordaki teknik gerekçeleri incelemenin gereksiz olduğunu savunuyor.",
+        answer: "adam-karalama"
+      },
+      {
+        text: "Bir grup akademisyen, üniversitelerde zorunlu devam uygulamasının sağlık sorunları, çalışma zorunluluğu ve bireysel öğrenme farklılıkları dikkate alınarak yeniden düzenlenmesini öneriyor. Fakülte kurulunun bir üyesi bu öneriye karşı çıkarak öğrencilerin yalnızca sınavlara girip diploma almasını esas alan bir üniversite anlayışının akademik disiplini ortadan kaldıracağını savunuyor.",
+        answer: "korkuluk"
+      },
+      {
+        text: "Bir gazeteci, şehir merkezindeki aynı cadde üzerinde bulunan üç kitapçıda fiyatların birbirine yakın ve oldukça yüksek olduğunu gözlemliyor. Yazısında, şehirdeki kitapçıların artık öğrencilerin bütçesine uygun seçenekler sunmadığını ileri sürüyor. Üstelik bu durumun şehir genelindeki okuma alışkanlığının azalmasında önemli bir rol oynadığını savunuyor.",
+        answer: "aceleci-genelleme"
+      },
+      {
+        text: "Bir belediyenin kültür dairesi, kütüphanelere ayrılan bütçenin daraldığını belirterek yeni bir düzenleme öneriyor. Yetkililer, mevcut kaynaklarla hem hafta sonu hizmetini sürdürmenin hem de yeni kitap almanın mümkün olmadığını savunuyor. Bu nedenle koleksiyonun güncel kalmasını isteyenlerin hafta sonu hizmetinden vazgeçmesi gerektiğini söylüyor. Ancak raporda bütçe kalemlerinin yeniden düzenlenmesi veya hizmet saatlerinin değiştirilmesi gibi seçenekler değerlendirilmiyor.",
+        answer: "yanlis-ikilem"
+      },
+      {
+        text: "Şehir merkezindeki bazı caddelerin belirli saatlerde araç trafiğine kapatılması öneriliyor. Ulaşım uzmanları, uygulamanın yaya güvenliğini artırabileceğini ve bölgedeki hava kirliliğini azaltabileceğini belirtiyor. Buna karşı çıkan bir köşe yazarı ise özel araç kullanımını bütünüyle ortadan kaldırmaya çalışan bu yaklaşımın insanların ulaşım özgürlüğünü tehdit ettiğini savunuyor.",
+        answer: "korkuluk"
+      },
+      {
+        text: "Bir belediye, yeni ulaşım hattının başarısını değerlendirmek amacıyla yolcu memnuniyeti araştırması yapıyor. Sabah saatlerinde hattı kullanan yolcuların büyük çoğunluğu hizmetten memnun olduğunu belirtiyor. Ancak akşam saatlerinde sefer yetersizliği ve uzun bekleme süreleri nedeniyle ciddi şikâyetler ortaya çıkıyor. Belediye, kamuoyuna yaptığı açıklamada sabah saatlerindeki memnuniyet oranlarını öne çıkararak hattın beklentileri karşıladığını duyuruyor.",
+        answer: "cimbizlama"
+      },
+      {
+        text: "Bir akademisyen, öğrencilerin araştırmalarında kullandıkları kaynakların doğruluğunu mutlaka kontrol etmeleri gerektiğini savunuyor. Öğrencilerden biri, akademisyenin birkaç yıl önce yayımladığı bir makalede hatalı bir kaynak gösterimi bulunduğunu hatırlatıyor. Akademisyenin kendi çalışmalarında bile bu kurala uymadığını belirterek kaynak kontrolü konusundaki önerisinin ciddiye alınamayacağını söylüyor.",
+        answer: "adam-karalama"
+      },
+      {
+        text: "Bir üniversite, öğrencilerin ideal çalışma ortamını belirlemek amacıyla anket gerçekleştiriyor. Anket, kütüphanenin sessiz çalışma salonunda bulunan 200 öğrenciye uygulanıyor. Katılımcıların büyük çoğunluğu sessiz ortamlarda daha verimli çalıştıklarını belirtiyor. Üniversite yönetimi bu sonuçtan hareketle öğrencilerin ortak çalışma ve tartışma alanlarına ihtiyaç duymadığını açıklıyor.",
+        answer: "aceleci-genelleme"
+      },
+      {
+        text: "Bir öğretim üyesi, derslerde telefon kullanımının sınırlandırılması gerektiğini, ancak bazı eğitim etkinliklerinde telefonlardan yararlanılabileceğini savunuyor. Bölüm yönetiminden bir başka akademisyen ise telefon kullanımına getirilen kısmi sınırlamaların dikkat sorununu çözmeyeceğini belirtiyor. Ona göre üniversite, ya telefonları dersliklerden tamamen uzaklaştırarak akademik disiplini koruyor ya da öğrencilerin dikkatinin dağılmasını kabul ediyor.",
+        answer: "yanlis-ikilem"
+      },
+      {
+        text: "Bir edebiyat araştırmacısı, lise müfredatında kadın yazarlara daha fazla yer verilmesinin edebiyat tarihine ilişkin bakış açısını zenginleştireceğini savunuyor. Buna karşı çıkan bir eleştirmen, edebiyatın değerini yazarların cinsiyetine göre belirlemeye çalışan bu yaklaşımın erkek yazarların eserlerini geri plana iterek edebî niteliği ikinci plana attığını ileri sürüyor.",
+        answer: "korkuluk"
+      },
+      {
+        text: "Mahallede yeni bir park yapılması gerektiğini savunan esnaf, bölgede çocukların güvenle oynayabileceği alanların yetersizliğine dikkat çekiyor. Ancak esnafın dükkânının parkın yapılması planlanan alana yakın olduğunu öğrenen bir mahalle sakini, bu önerinin yalnızca ticari kazanç beklentisinden kaynaklandığını söylüyor. Bu nedenle esnafın çocukların ihtiyaçlarıyla ilgili gerekçelerini değerlendirmeye gerek olmadığını savunuyor.",
+        answer: "adam-karalama"
+      },
+      {
+        text: "Bir kurs merkezi, yıl sonunda en yüksek puanı alan on öğrencisinin sonuçlarını yayımlayarak uyguladığı eğitim yönteminin son derece başarılı olduğunu duyuruyor. Merkezin reklamlarında bu öğrencilerin başarı hikâyelerine geniş yer veriliyor. Ancak aynı yıl kursa katılan öğrencilerin genel başarı ortalamasının önceki yıla göre düştüğü görülüyor. Kurum, bu bilgiyi tanıtım çalışmalarında paylaşmıyor.",
+        answer: "cimbizlama"
+      },
+      {
+        text: "Bir üniversitede devam zorunluluğunun yeniden düzenlenmesi tartışılıyor. Öğrenci temsilcileri, devam koşullarında belirli ölçüde esneklik sağlanmasını öneriyor. Üniversite yönetiminden bir üye ise iki yaklaşım arasında karar verilmesi gerektiğini savunuyor: Üniversite ya öğrencilerin derslere katılımını zorunlu tutarak eğitimin ciddiyetini koruyor ya da devam kararını tamamen öğrencilere bırakarak akademik disiplinden vazgeçiyor.",
+        answer: "yanlis-ikilem"
+      },
+      {
+        text: "Bir ekonomi yorumcusu, son aylarda iki büyük restoran zincirinin müşteri şikâyetlerinde artış yaşandığını belirtiyor. Bu işletmelerdeki hizmet sorunlarını değerlendirdikten sonra ülkedeki restoran sektörünün genel olarak müşteri memnuniyetini önemsememeye başladığını savunuyor. Ayrıca bu durumun sektörde çalışanların mesleki sorumluluk anlayışındaki gerilemeyi gösterdiğini ileri sürüyor.",
+        answer: "aceleci-genelleme"
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let answered = false;
+
+    const questionTitle = document.getElementById("questionTitle");
+    const questionText = document.getElementById("questionText");
+    const optionsDiv = document.getElementById("options");
+    const feedback = document.getElementById("feedback");
+    const nextBtn = document.getElementById("nextBtn");
+    const progress = document.getElementById("progress");
+    const scoreText = document.getElementById("score");
+    const statusText = document.getElementById("statusText");
+    const resultBox = document.getElementById("resultBox");
+    const finalScore = document.getElementById("finalScore");
+    const restartBtn = document.getElementById("restartBtn");
+    const quizBox = document.getElementById("quizBox");
+
+    function renderQuestion() {
+      answered = false;
+      feedback.className = "feedback";
+      feedback.style.display = "none";
+      feedback.textContent = "";
+      nextBtn.style.display = "none";
+
+      const q = questions[currentQuestion];
+
+      questionTitle.textContent = `Soru ${currentQuestion + 1}`;
+      questionText.textContent = q.text;
+
+      progress.textContent = `Soru: ${currentQuestion + 1} / ${questions.length}`;
+      scoreText.textContent = `Puan: ${score}`;
+      statusText.textContent = "Durum: Devam ediyor";
+
+      optionsDiv.innerHTML = "";
+
+      optionList.forEach(option => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.innerHTML = `
+          <img src="${option.image}" alt="${option.label}">
+        `;
+        btn.onclick = () => checkAnswer(option.key);
+        optionsDiv.appendChild(btn);
+      });
+    }
+
+    function getLabel(key) {
+      const found = optionList.find(item => item.key === key);
+      return found ? found.label : key;
+    }
+
+    function checkAnswer(selected) {
+      if (answered) return;
+      answered = true;
+
+      const correct = questions[currentQuestion].answer;
+
+      if (selected === correct) {
+        score++;
+        feedback.className = "feedback correct";
+        feedback.textContent = `Doğru! Cevap: ${getLabel(correct)}`;
+      } else {
+        feedback.className = "feedback wrong";
+        feedback.textContent = `Yanlış. Doğru cevap: ${getLabel(correct)}`;
+      }
+
+      scoreText.textContent = `Puan: ${score}`;
+      feedback.style.display = "block";
+      nextBtn.style.display = "inline-block";
+    }
+
+    nextBtn.addEventListener("click", () => {
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    });
+
+    function showResult() {
+      quizBox.style.display = "none";
+      optionsDiv.style.display = "none";
+      feedback.style.display = "none";
+      nextBtn.style.display = "none";
+
+      resultBox.style.display = "block";
+      restartBtn.style.display = "inline-block";
+
+      progress.textContent = `Soru: ${questions.length} / ${questions.length}`;
+      scoreText.textContent = `Puan: ${score}`;
+      statusText.textContent = "Durum: Test tamamlandı";
+
+      finalScore.textContent = `Toplam ${questions.length} sorudan ${score} doğru yaptın.`;
+    }
+
+    restartBtn.addEventListener("click", () => {
+      currentQuestion = 0;
+      score = 0;
+      resultBox.style.display = "none";
+      quizBox.style.display = "block";
+      optionsDiv.style.display = "grid";
+      renderQuestion();
+    });
+
+    renderQuestion();
+  </script>
+</body>
+</html>
