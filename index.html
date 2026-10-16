@@ -4,7 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Safsata Türünü Bul</title>
+
+  <!-- GAZİANTEP ÜNİVERSİTESİ SEKME İKONU -->
+  <link rel="icon" type="image/png" href="gaziantep-uni-icon.png">
 
   <style>
     :root {
@@ -30,11 +34,25 @@
       padding: 24px 18px 50px;
     }
 
+    .site-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .uni-logo {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+    }
+
     h1 {
       color: var(--mor);
       text-align: center;
       font-size: clamp(24px, 3.5vw, 34px);
-      margin: 0 0 22px;
+      margin: 0;
     }
 
     .status {
@@ -85,7 +103,8 @@
       color: #5b4b5e;
     }
 
-    /* 6 GÖRSEL YAN YANA */
+    /* ALTI GÖRSELİN DÜZENİ */
+
     .options {
       display: grid;
       grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -110,7 +129,7 @@
         transform .15s;
     }
 
-    .option:not(:disabled):hover {
+    .option:not(:disabled):not(.wrong):hover {
       border-color: var(--mor);
       transform: translateY(-2px);
     }
@@ -128,14 +147,16 @@
       object-fit: contain;
     }
 
-    /* YANLIŞ SEÇİM */
+    /* YANLIŞ CEVAP: GEÇİCİ KIRMIZI */
+
     .option.wrong {
       background: #ffdddd;
       border-color: var(--kirmizi);
       box-shadow: 0 0 0 2px #f5b5b5;
     }
 
-    /* DOĞRU SEÇİM */
+    /* DOĞRU CEVAP: KALICI YEŞİL */
+
     .option.correct {
       background: #e7f8eb;
       border-color: var(--yesil);
@@ -169,6 +190,8 @@
       cursor: not-allowed;
     }
 
+    /* SONUÇ EKRANI */
+
     .finish {
       display: none;
       background: white;
@@ -176,18 +199,27 @@
       text-align: center;
       padding: 35px 20px;
       margin-top: 22px;
+      box-shadow: 0 3px 12px #0000000b;
     }
 
     .finish h2 {
       color: var(--mor);
+      font-size: 28px;
     }
 
     .finish p {
-      font-size: 19px;
-      line-height: 1.5;
+      font-size: 21px;
+      line-height: 1.6;
+    }
+
+    .perfect-message {
+      color: var(--yesil);
+      font-weight: bold;
+      font-size: 24px !important;
     }
 
     /* TABLET: 3 + 3 */
+
     @media (max-width: 850px) {
       .options {
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -195,9 +227,19 @@
     }
 
     /* TELEFON: 2 + 2 + 2 */
+
     @media (max-width: 550px) {
       main {
         padding: 16px 12px 36px;
+      }
+
+      .site-header {
+        gap: 10px;
+      }
+
+      .uni-logo {
+        width: 45px;
+        height: 45px;
       }
 
       .case {
@@ -225,7 +267,21 @@
 
 <main>
 
-  <h1>Safsata Türünü Bul</h1>
+  <!-- ÜNİVERSİTE LOGOSU VE BAŞLIK -->
+
+  <header class="site-header">
+
+    <img
+      src="gaziantep-uni-icon.png"
+      alt="Gaziantep Üniversitesi"
+      class="uni-logo"
+    >
+
+    <h1>Safsata Türünü Bul</h1>
+
+  </header>
+
+  <!-- DURUM VE PUAN -->
 
   <section class="status">
     <span id="counter">Durum 1 / 15</span>
@@ -235,6 +291,8 @@
   <div class="bar">
     <div class="bar-fill" id="barFill"></div>
   </div>
+
+  <!-- OYUN -->
 
   <section id="game">
 
@@ -256,13 +314,18 @@
 
   </section>
 
+  <!-- SONUÇ EKRANI -->
+
   <section id="finish" class="finish">
-    <h2>Tüm durumlar tamamlandı!</h2>
+
+    <h2>Çalışma Tamamlandı!</h2>
+
     <p id="result"></p>
 
     <button id="restart" class="next">
       Yeniden Başla
     </button>
+
   </section>
 
 </main>
@@ -456,7 +519,7 @@
     const correctAnswer = situations[index].answer;
 
     // YANLIŞ SEÇİM:
-    // 0,75 SANİYE KIRMIZI YANAR, SONRA SÖNER.
+    // 0,75 SANİYE KIRMIZI YANIP SÖNER.
 
     if (key !== correctAnswer) {
 
@@ -476,7 +539,7 @@
     }
 
     // DOĞRU SEÇİM:
-    // YEŞİL YANAR VE YEŞİL KALIR.
+    // YEŞİL YANAR VE KALIR.
 
     solved = true;
 
@@ -490,13 +553,13 @@
     score.textContent =
       `İlk denemede doğru: ${firstTryCorrect}`;
 
-    // CEVAP VERİLDİKTEN SONRA SEÇENEKLER KİLİTLENİR.
+    // SEÇENEKLERİ KİLİTLE
 
     [...options.children].forEach(option => {
       option.disabled = true;
     });
 
-    // SONRAKİ DURUM BUTONU AÇILIR.
+    // SONRAKİ DURUMA GEÇİŞİ AÇ
 
     next.disabled = false;
   }
@@ -520,25 +583,50 @@
 
     } else {
 
-      document.getElementById("game").style.display = "none";
-
-      document.getElementById("finish").style.display = "block";
-
-      counter.textContent =
-        `Durum ${situations.length} / ${situations.length}`;
-
-      barFill.style.width = "100%";
-
-      document.getElementById("result").textContent =
-        `${situations.length} durumu tamamladın. İlk denemede ${firstTryCorrect} doğru seçimin var.`;
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
+      showResult();
 
     }
   });
+
+  // SONUÇ EKRANI
+
+  function showResult() {
+
+    document.getElementById("game").style.display = "none";
+
+    document.getElementById("finish").style.display = "block";
+
+    counter.textContent =
+      `Durum ${situations.length} / ${situations.length}`;
+
+    barFill.style.width = "100%";
+
+    const result = document.getElementById("result");
+
+    // TÜMÜ İLK DENEMEDE DOĞRUYSA
+    // ÖZEL TEBRİK MESAJI
+
+    if (firstTryCorrect === situations.length) {
+
+      result.textContent =
+        "Tebrikler! Tüm durumları ilk denemede doğru yanıtladınız!";
+
+      result.className = "perfect-message";
+
+    } else {
+
+      result.textContent =
+        `${situations.length} durumu tamamladınız. İlk denemede ${firstTryCorrect} doğru yanıt verdiniz.`;
+
+      result.className = "";
+
+    }
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
 
   // YENİDEN BAŞLA
 
@@ -547,6 +635,8 @@
 
       index = 0;
       firstTryCorrect = 0;
+      attemptedWrong = false;
+      solved = false;
 
       document.getElementById("game").style.display = "block";
 
